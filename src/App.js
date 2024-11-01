@@ -35,21 +35,13 @@ const App = () => {
       const savedTreat = response.data;
       const photoURL = formData.get('photoURL'); // Retrieve the photo URL to display in grid
 
-      // setTreats((prevTreats) => [...prevTreats, { ...savedTreat, photo: formData.get('photoURL') }]); 
-      // setTreats((prevTreats) => [newTreat, ...prevTreats]);
       setTreats((prevTreats) => [savedTreat, ...prevTreats]);
-      // setTreats((prevTreats) => [{ ...savedTreat, photo: photoURL }, ...prevTreats]);
       setNewTreat({ title: '', date: '', description: '', photo: null}); // reset states
       setModalOpen(false);
       // console.log(savedTreat); // DEBUG
     } catch (error) {
       console.error('Error saving little treat:', error);
     }
-
-    // setTreats([...treats, newTreat]);
-    // submitTreat(newTreat);
-    // setNewTreat({ title: '', date: '', description: '', photo: null });
-    // setModalOpen(false); 
   }
 
   return (

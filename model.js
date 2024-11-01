@@ -25,10 +25,6 @@ const Treat = sequelize.define('Treat', {
       type: DataTypes.STRING,  // Store filename or URL
       allowNull: true,
     },
-    // photoURL: {
-    //   type: DataTypes.STRING, // Store the URL to the photo
-    //   allowNULL: true,
-    // }
 });
 
 (async () => {

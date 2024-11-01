@@ -24,30 +24,6 @@ const TreatGrid = ({ treats }) => (
       <TreatCard key={index} treat={treat} />
     ))}
   </Box>
-  
-  // <Box display="flex" justifyContent="center" padding={2}>
-  //   <Masonry className="" columns={{ xs: 1, sm: 2, md: 3 }} spacing={2}>
-  //     {treats.slice().reverse().map((treat, index) => (
-  //       <Grid key={index} sx={{ marginBottom: 2 }} size={4}>
-  //         <TreatCard treat={treat} />
-  //       </Grid>
-  //     ))}
-  //   </Masonry>
-  // </Box>
-  
-  // <Masonry breakpointCols={3} className="my-masonry-grid" columnClassName="my-masonry-grid_column">
-  //   {treats.map((treat, index) => (
-  //     <TreatCard key={index} treat={treat} />
-  //   ))}
-  // </Masonry>
-
-
-    // <Masonry columns={{ xs: 1, sm: 2, md: 3 }} spacing={2} columnClassName="">
-    //   {treats.slice().reverse().map((treat, index) => (
-    //     <TreatCard key={index} treat={treat} />
-    //   ))}
-    // </Masonry>
-
 );
 
 export default TreatGrid;
