@@ -1,25 +1,89 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
+import { Button } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import AddTreat from './components/AddTreat';
+import axios from 'axios';
+import TreatGrid from './components/DisplayTreats';
+import Grid from '@mui/material/Grid2';
 
-function App() {
+
+const App = () => {
+  // states to track little treats, the treat being added, and if modal is open/closed
+  const [treats, setTreats] = useState([]);
+  const [newTreat, setNewTreat] = useState({ title: '', date: '', description: '', photo: null });
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  // grabs all the little treats in the db on server start up
+  useEffect(() => {
+    axios.get('http://localhost:5001/treats').then((response) => {
+      setTreats(response.data);
+      console.log(response.data);
+    }).catch((error) => {
+      console.error("Error fetching treats:", error);
+    });
+  }, []);
+
+  // adds the new treat to the list of little treats, resets the form values and closes modal
+  const handleAddTreat = async (formData) => {
+    try {
+      const response = await axios.post('http://localhost:5001/treats', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      console.log('Treat added:', response.data); // Log to verify backend response
+  
+      const savedTreat = response.data;
+      const photoURL = formData.get('photoURL'); // Retrieve the photo URL to display in grid
+
+      // setTreats((prevTreats) => [...prevTreats, { ...savedTreat, photo: formData.get('photoURL') }]); 
+      // setTreats((prevTreats) => [newTreat, ...prevTreats]);
+      setTreats((prevTreats) => [savedTreat, ...prevTreats]);
+      // setTreats((prevTreats) => [{ ...savedTreat, photo: photoURL }, ...prevTreats]);
+      setNewTreat({ title: '', date: '', description: '', photo: null}); // reset states
+      setModalOpen(false);
+      // console.log(savedTreat); // DEBUG
+    } catch (error) {
+      console.error('Error saving little treat:', error);
+    }
+
+    // setTreats([...treats, newTreat]);
+    // submitTreat(newTreat);
+    // setNewTreat({ title: '', date: '', description: '', photo: null });
+    // setModalOpen(false); 
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <Grid container >
+          <Grid size={7} alignContent={'center'}>
+            <h1>
+              Little Treat Tracker
+            </h1>
+          </Grid>
+          <Grid size={5} alignContent={'center'}>
+            <Button onClick={() => setModalOpen(true)} variant="contained">
+                Add Treat
+            </Button>
+          </Grid>
+        </Grid>
+    
+        <AddTreat 
+          open={isModalOpen} 
+          onClose={() => setModalOpen(false)} 
+          onSave={handleAddTreat} 
+          newTreat={newTreat}
+          setNewTreat={setNewTreat}
+        />
+
       </header>
+      <div>
+        <TreatGrid treats={treats}/>
+      </div>
     </div>
   );
-}
+};
+
+
 
 export default App;
